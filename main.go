@@ -2,88 +2,43 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"regexp"
 
-	"io/fs"
-
-	"github.com/evandrojr/expert-ai/poe"
+	"github.com/evandrojr/expert-ai/drivers/chatgpt"
+	"github.com/evandrojr/expert-ai/drivers/poe"
+	"github.com/evandrojr/expert-ai/tools"
 )
 
 func main() {
+	fmt.Println("run:")
 	fmt.Println("google-chrome --remote-debugging-port=9222")
 
-	prompt, err := readFile("prompt.txt")
+	prompt, err := tools.ReadFile("prompt.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	answer, err := poe.Prompt(prompt)
+	answer_poe, err := poe.Prompt(prompt)
 	if err != nil {
 		panic(err)
 	}
 
-	err = writeFile("answer.txt", answer)
+	err = tools.WriteFile("answers/answer_poe.txt", answer_poe)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer)
-	// fmt.Println("google-chrome --remote-debugging-port=9222
-}
+	fmt.Println(answer_poe)
 
-func readFile(filename string) (string, error) {
-	// Read the entire file into a byte slice.
-	b, err := os.ReadFile(filename)
+	answer_chatgpt, err := chatgpt.Prompt(prompt)
 	if err != nil {
-		return "", err
+		panic(err)
 	}
 
-	// Convert the byte slice to a string.
-	str := string(b)
-
-	return str, nil
-}
-
-func writeFile(filename string, data string) error {
-	// Create the file.
-	f, err := os.Create(filename)
+	err = tools.WriteFile("answers/answer_chatgpt.txt", answer_chatgpt)
 	if err != nil {
-		return err
+		panic(err)
 	}
+	fmt.Println(answer_chatgpt)
 
-	// Write the data to the file.
-	_, err = f.WriteString(data)
-	if err != nil {
-		return err
-	}
+	tools.JoinFiles("answers/answer_poe.txt", "answers/answer_chatgpt.txt", "answers/combined_answers.txt")
 
-	// Close the file.
-	if err := f.Close(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func ExtractPlainText(inputFile, outputFile string) error {
-	// Ler o arquivo HTML
-	htmlContent, err := os.ReadFile(inputFile)
-	if err != nil {
-		return fmt.Errorf("erro ao ler o arquivo de entrada: %v", err)
-	}
-
-	// Definir expressão regular para encontrar tags HTML e símbolos HTML
-	htmlTagsRegex := regexp.MustCompile("<[^>]*>|&[^;]+;")
-
-	// Remover tags HTML e símbolos HTML do conteúdo HTML
-	cleanText := htmlTagsRegex.ReplaceAllString(string(htmlContent), "")
-
-	// Escrever o texto limpo no arquivo de saída
-	err = os.WriteFile(outputFile, []byte(cleanText), fs.FileMode(0644))
-	if err != nil {
-		return fmt.Errorf("rro ao escrever no arquivo de saída: %v", err)
-	}
-
-	fmt.Println("Texto limpo foi salvo em", outputFile)
-	return nil
 }

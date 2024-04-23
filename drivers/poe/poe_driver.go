@@ -28,6 +28,8 @@ func setupExecutionContext(question string) (string, error) {
 	verbose := flag.Bool("v", false, "verbose")
 	urlstr := flag.String("url", "ws://127.0.0.1:9222", "devtools url")
 	nav := flag.String("nav", "https://poe.com/Claude-3-Haiku", "nav")
+	// nav := flag.String("nav", "https://poe.com", "nav")
+
 	d := flag.Duration("d", 1*time.Second, "wait duration")
 	flag.Parse()
 
@@ -59,6 +61,8 @@ func run(ctx context.Context, verbose bool, urlstr, nav string, d time.Duration,
 		chromedp.Navigate(nav),
 		chromedp.Sleep(d),
 		chromedp.SendKeys(`textarea[placeholder="Fale com Claude-3-Haiku"]`, question+"\n"),
+		// chromedp.SendKeys(`textarea[placeholder="Iniciar um novo chat"]`, question+"\n"),
+
 		chromedp.WaitVisible(reloadSelector),
 		chromedp.InnerHTML("main", &text, chromedp.ByQuery),
 	); err != nil {
