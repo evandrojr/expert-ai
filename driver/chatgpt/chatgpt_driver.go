@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
-	"github.com/evandrojr/expert-ai/tools"
+	"github.com/evandrojr/expert-ai/tool"
 )
 
 var chromedpUrl = `ws://127.0.0.1:9222`
@@ -26,7 +26,7 @@ func Prompt(question string) (string, error) {
 		return "", err
 	}
 
-	return tools.HTMLToText(answer), nil
+	return tool.HTMLToText(answer), nil
 }
 
 func setupContext() (context.Context, context.CancelFunc) {
