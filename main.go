@@ -22,7 +22,10 @@ func main() {
 		panic(err)
 	}
 
-	err = tools.WriteFile("answers/answer_poe.txt", answer_poe)
+	resposta1Cabecalho := "Resposta 1:\n\n"
+	resposta2Cabecalho := "\n\nResposta 2:\n\n"
+
+	err = tools.WriteFile("answers/answer_poe.txt", resposta1Cabecalho+answer_poe)
 	if err != nil {
 		panic(err)
 	}
@@ -33,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	err = tools.WriteFile("answers/answer_chatgpt.txt", answer_chatgpt)
+	err = tools.WriteFile("answers/answer_chatgpt.txt", resposta2Cabecalho+answer_chatgpt)
 	if err != nil {
 		panic(err)
 	}

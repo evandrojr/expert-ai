@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
+	"github.com/evandrojr/expert-ai/tools"
 )
 
 var chromedpUrl = `ws://127.0.0.1:9222`
@@ -14,16 +15,19 @@ var dAttributeOfWaitVisible = "M11.2 21a1 1 0 0 1-.914-.594L7.351 13.8H5.6a2.615
 var waitVisibleSelector = `path[d="` + dAttributeOfWaitVisible + `"]`
 var url = "https://poe.com/Claude-3-Haiku"
 var sendKeys = `textarea[placeholder="Fale com Claude-3-Haiku"]`
+var innerHTML = `main`
 
 func Prompt(question string) (string, error) {
-	ctx, cancel := setupContext()
-	defer cancel()
+	ctx, _ := setupContext()
+	// defer cancel()
 
 	answer, err := ask(ctx, true, url, 1*time.Second, question)
 	if err != nil {
 		return "", err
 	}
-	return answer, nil
+	text := tools.HTMLToText(answer)
+	text = tools.RemoveLine(text, 3)
+	return text, nil
 }
 
 func setupContext() (context.Context, context.CancelFunc) {
@@ -32,27 +36,24 @@ func setupContext() (context.Context, context.CancelFunc) {
 }
 
 func ask(ctx context.Context, verbose bool, nav string, d time.Duration, question string) (string, error) {
-
 	var opts []chromedp.ContextOption
+	var answer string
+
 	if verbose {
 		opts = append(opts, chromedp.WithDebugf(log.Printf))
 	}
-
 	ctx, _ = chromedp.NewContext(ctx, opts...)
-
-	var text string
 
 	if err := chromedp.Run(ctx,
 		chromedp.Navigate(nav),
 		chromedp.Sleep(d),
 		chromedp.SendKeys(sendKeys, question+"\n"),
 		// chromedp.SendKeys(`textarea[placeholder="Iniciar um novo chat"]`, question+"\n"),
-
 		chromedp.WaitVisible(waitVisibleSelector),
-		chromedp.InnerHTML("main", &text, chromedp.ByQuery),
+		chromedp.InnerHTML(innerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
 		return "", fmt.Errorf("failed getting body of %s: %v", nav, err)
 	}
-	fmt.Println(text)
-	return text, nil
+	fmt.Println(answer)
+	return answer, nil
 }
