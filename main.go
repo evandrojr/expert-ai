@@ -3,10 +3,18 @@ package main
 import (
 	"fmt"
 
-	"github.com/evandrojr/expert-ai/driver/chatgpt"
-	"github.com/evandrojr/expert-ai/driver/poe"
+	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
 	"github.com/evandrojr/expert-ai/tool"
 )
+
+func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) string {
+	var _ai = ai.Setup()
+	answer, err := _ai.SubmitPrompt(prompt)
+	if err != nil {
+		panic(err)
+	}
+	return answer
+}
 
 func main() {
 	fmt.Println("run:")
@@ -17,37 +25,34 @@ func main() {
 		panic(err)
 	}
 
-	answer_poe, err := poe.Prompt(prompt)
-	if err != nil {
-		panic(err)
-	}
+	var claude3 artificialintelligence.Claude3
+	answerClaude := sendPrompt(claude3, prompt)
 
 	resposta1Cabecalho := "Resposta 1:\n\n"
 	resposta2Cabecalho := "\n\nResposta 2:\n\n"
 
-	err = tool.WriteFile("answers/answer_poe.txt", resposta1Cabecalho+answer_poe)
+	err = tool.WriteFile("answers/answer_poe.txt", resposta1Cabecalho+answerClaude)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer_poe)
+	fmt.Println(answerClaude)
 
-	err = tool.WriteFile("answers/answer_poe_sem_cabecalho.txt", answer_poe)
+	err = tool.WriteFile("answers/answer_poe_sem_cabecalho.txt", answerClaude)
 
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer_poe)
+	fmt.Println(answerClaude)
 
-	answer_chatgpt, err := chatgpt.Prompt(prompt)
+	var chatgpt artificialintelligence.Chatgpt
+
+	answerChatgpt := sendPrompt(chatgpt, prompt)
+
+	err = tool.WriteFile("answers/answer_chatgpt.txt", resposta2Cabecalho+answerChatgpt)
 	if err != nil {
 		panic(err)
 	}
-
-	err = tool.WriteFile("answers/answer_chatgpt.txt", resposta2Cabecalho+answer_chatgpt)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(answer_chatgpt)
+	fmt.Println(answerChatgpt)
 
 	tool.JoinFiles("answers/answer_poe.txt", "answers/answer_chatgpt.txt", "answers/combined_answers.txt")
 
