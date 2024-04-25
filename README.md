@@ -1,4 +1,4 @@
-# expert-ai
+# Expert-ai
 
 
 ## Padrão de nomeclatura do projeto
