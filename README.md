@@ -1,9 +1,9 @@
 # expert-ai
 
-```
-Em Go, não há um padrão rígido de nomenclatura de arquivos, mas existem algumas convenções comumente adotadas:
 
-Nomes de arquivo: Os arquivos Go geralmente têm a extensão .go. Por exemplo: main.go, utils.go, user_service.go.
+## Padrão de nomeclatura do projeto
+
+Em Go, não há um padrão rígido de nomenclatura de arquivos, mas existem algumas convenções comumente adotadas:
 
 Nomeação de pacotes: Os nomes dos pacotes devem ser escritos em minúsculas e, preferencialmente, no singular. Por exemplo: main, utils, user_service.
 
@@ -16,4 +16,3 @@ Nomeação de tipos: Os tipos personalizados, como structs e interfaces, são ge
 Agrupamento de arquivos relacionados: Quando você tem vários arquivos relacionados a um mesmo pacote, é comum agrupá-los no mesmo diretório. Por exemplo: user/user.go, user/user_test.go, user/user_repository.go.
 
 Essas são as principais convenções de nomenclatura de arquivos Go, mas o importante é ser consistente em todo o seu projeto. A clareza e a legibilidade do código são os objetivos principais.
-```
