@@ -17,7 +17,8 @@ func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string)
 }
 
 func main() {
-	fmt.Println("run:")
+	fmt.Println("Run:")
+	fmt.Println("killall google-chrome")
 	fmt.Println("google-chrome --remote-debugging-port=9222")
 
 	prompt, err := tool.ReadFile("prompt.txt")
@@ -31,7 +32,17 @@ func main() {
 	resposta1Cabecalho := "Resposta 1:\n\n"
 	resposta2Cabecalho := "\n\nResposta 2:\n\n"
 
-	err = tool.WriteFile("answers/answer_poe.txt", resposta1Cabecalho+answerClaude)
+	var chatgpt artificialintelligence.Chatgpt
+
+	answerChatgpt := sendPrompt(chatgpt, prompt)
+
+	err = tool.WriteFile("answers/answer_chatgpt.txt", resposta1Cabecalho + answerChatgpt)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(answerChatgpt)
+
+	err = tool.WriteFile("answers/answer_poe.txt", resposta2Cabecalho + answerClaude)
 	if err != nil {
 		panic(err)
 	}
@@ -43,16 +54,6 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(answerClaude)
-
-	var chatgpt artificialintelligence.Chatgpt
-
-	answerChatgpt := sendPrompt(chatgpt, prompt)
-
-	err = tool.WriteFile("answers/answer_chatgpt.txt", resposta2Cabecalho+answerChatgpt)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(answerChatgpt)
 
 	tool.JoinFiles("answers/answer_poe.txt", "answers/answer_chatgpt.txt", "answers/combined_answers.txt")
 

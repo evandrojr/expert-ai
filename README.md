@@ -1,18 +1,41 @@
 # Expert-ai
 
 
-## Padrão de nomeclatura do projeto
+## Install
 
-Em Go, não há um padrão rígido de nomenclatura de arquivos, mas existem algumas convenções comumente adotadas:
+```
+git clone git@github.com:evandrojr/expert-ai.git
+go mod tidy
+echo "Who invented the airplane" > prompt.txt
+```
 
-Nomeação de pacotes: Os nomes dos pacotes devem ser escritos em minúsculas e, preferencialmente, no singular. Por exemplo: main, utils, user_service.
+## Run
+Close Chrome before and run it with chromedp enabled.
 
-Nomeação de variáveis e funções: Segue-se a convenção de nomenclatura do Go, que usa o estilo "camelCase" para funções e variáveis. Por exemplo: calculateTotal(), getUserById(), maxValue.
+```
+killall google-chrome
+google-chrome --remote-debugging-port=9222
+go run .
+```
 
-Nomeação de constantes: As constantes são geralmente escritas em letras maiúsculas, com palavras separadas por underscores. Por exemplo: MAX_USERS, DEFAULT_TIMEOUT.
+## Getting in touch
 
-Nomeação de tipos: Os tipos personalizados, como structs e interfaces, são geralmente escritos com a primeira letra maiúscula. Por exemplo: User, UserService, HttpHandler.
+[+5571982864766![WhatsApp][whatsapp-logo]](https://wa.me/5571982864766)
 
-Agrupamento de arquivos relacionados: Quando você tem vários arquivos relacionados a um mesmo pacote, é comum agrupá-los no mesmo diretório. Por exemplo: user/user.go, user/user_test.go, user/user_repository.go.
+[whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/200px-WhatsApp.svg.png
 
-Essas são as principais convenções de nomenclatura de arquivos Go, mas o importante é ser consistente em todo o seu projeto. A clareza e a legibilidade do código são os objetivos principais.
+## Project Naming Convention
+
+In Go, there is no rigid file naming standard, but there are some commonly adopted conventions:
+
+Naming packages: Package names should be written in lowercase and preferably in the singular. For example: main, utils, user_service.
+
+Naming variables and functions: The Go naming convention follows the "camelCase" style for functions and variables. For example: calculateTotal(), getUserById(), maxValue.
+
+Naming constants: Constants are generally written in uppercase, with words separated by underscores. For example: MAX_USERS, DEFAULT_TIMEOUT.
+
+Naming types: Custom types, such as structs and interfaces, are usually written with the first letter capitalized. For example: User, UserService, HttpHandler.
+
+Grouping related files: When you have multiple files related to the same package, it's common to group them in the same directory. For example: user/user.go, user/user_test.go, user/user_repository.go.
+
+These are the main Go file naming conventions, but the important thing is to be consistent throughout your project. Clarity and readability of the code are the primary objectives.
