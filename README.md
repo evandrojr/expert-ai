@@ -3,7 +3,7 @@
 
 ## Install
 
-Install Go from https://go.dev/
+Install Go from https://go.dev/ or using gvm https://github.com/moovweb/gvm .
 
 ```
 git clone git@github.com:evandrojr/expert-ai.git
