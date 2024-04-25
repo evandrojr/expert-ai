@@ -3,6 +3,8 @@
 
 ## Install
 
+Install Go from https://go.dev/
+
 ```
 git clone git@github.com:evandrojr/expert-ai.git
 go mod tidy
