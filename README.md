@@ -1,5 +1,12 @@
 # Expert-AI
 
+Is it possible to programmatically access multiple paid AI services with the same question and receive unique answers without cost to the user?
+
+![LOL](resources/copilot-mistaken.png)
+
+Sorry, now it is!
+
+
 ## Description
 
 Expert-AI is an AI response's compiler. A program that accesses different artificial intelligences, collects the responses they provide to the same question, and then synthesizes a final response based on the obtained information.
