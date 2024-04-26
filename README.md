@@ -33,7 +33,7 @@ go run .
 
 ## Getting in touch
 
-[+5571982864766 ![WhatsApp][whatsapp-logo]](https://wa.me/5571982864766)
+ [Evandro Jr +5571982864766 ![WhatsApp][whatsapp-logo]](https://wa.me/5571982864766)
 
 [whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/32px-WhatsApp.svg.png
 
