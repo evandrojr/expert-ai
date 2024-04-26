@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"regexp"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -24,13 +25,23 @@ func (ai Claude3) SubmitPrompt(prompt string) (string, error) {
 	ctx, _ := ai.setupContext()
 	// defer cancel()
 
-	answer, err := ai.scrape(ctx, true, ai.Url, 1*time.Second, prompt)
+	answer, err := ai.scrape(ctx, true, ai.Url, 2*time.Second, prompt)
 	if err != nil {
 		return "", err
 	}
-	text := tool.HTMLToText(answer)
-	text = tool.RemoveLine(text, 3)
-	return text, nil
+
+	answer = ai.cleanAnswer(answer)
+
+	return answer, nil
+}
+
+func (ai Claude3) cleanAnswer(dirtAnswer string) string {
+	text := tool.HTMLToText(dirtAnswer)
+	text = tool.RemoveRubbishFromBeginning(text, text)
+	// text = tool.RemoveLine(text, 3)
+	regex := regexp.MustCompile(`\b(Claude-3-Haiku|Poe)\b`)
+	text = regex.ReplaceAllString(text, "")
+	return text
 }
 
 func (ai Claude3) setupContext() (context.Context, context.CancelFunc) {
@@ -41,6 +52,7 @@ func (ai Claude3) setupContext() (context.Context, context.CancelFunc) {
 func (ai Claude3) scrape(ctx context.Context, verbose bool, nav string, d time.Duration, question string) (string, error) {
 	var opts []chromedp.ContextOption
 	var answer string
+	var activeElementClass string
 	waitVisibleSelector := `path[d="` + ai.DAttributeOfWaitVisible + `"]`
 
 	if verbose {
@@ -51,13 +63,22 @@ func (ai Claude3) scrape(ctx context.Context, verbose bool, nav string, d time.D
 	if err := chromedp.Run(ctx,
 		chromedp.Navigate(nav),
 		chromedp.Sleep(d),
-		chromedp.SendKeys(ai.SendKeys, question+"\n"),
-		// chromedp.SendKeys(`textarea[placeholder="Iniciar um novo chat"]`, question+"\n"),
+		chromedp.Evaluate(`document.activeElement.className`, &activeElementClass),
+	); err != nil {
+		return "", fmt.Errorf("1st run failed %s: %v activeElementClass %v", nav, err, activeElementClass)
+	}
+	fmt.Println(activeElementClass)
+	fmt.Println(answer)
+
+	if err := chromedp.Run(ctx,
+		// chromedp.Sleep(d),
+		chromedp.SetValue(`.`+activeElementClass, question, chromedp.ByQuery),
+		chromedp.SendKeys(ai.SendKeys, "\n"),
 		chromedp.WaitVisible(waitVisibleSelector),
 		chromedp.InnerHTML(ai.InnerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
-		return "", fmt.Errorf("failed getting body of %s: %v", nav, err)
+		return "", fmt.Errorf("2nd run failed %s: %v activeElementClass %v", nav, err, activeElementClass)
 	}
-	fmt.Println(answer)
+
 	return answer, nil
 }

@@ -1,6 +1,5 @@
 # Expert-ai
 
-
 ## Install
 
 Install Go from https://go.dev/ or using gvm https://github.com/moovweb/gvm .
@@ -15,7 +14,7 @@ echo "Who invented the airplane" > prompt.txt
 Close Chrome before and run it with chromedp enabled.
 
 ```
-killall google-chrome
+killall chrome
 google-chrome --remote-debugging-port=9222
 go run .
 ```

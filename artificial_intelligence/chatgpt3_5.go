@@ -43,6 +43,7 @@ func (ai Chatgpt) setupContext() (context.Context, context.CancelFunc) {
 func (ai Chatgpt) scrape(ctx context.Context, verbose bool, nav string, d time.Duration, question string) (string, error) {
 
 	var opts []chromedp.ContextOption
+	var activeElementId string
 
 	if verbose {
 		opts = append(opts, chromedp.WithDebugf(log.Printf))
@@ -51,15 +52,25 @@ func (ai Chatgpt) scrape(ctx context.Context, verbose bool, nav string, d time.D
 	ctx, _ = chromedp.NewContext(ctx, opts...)
 	var answer string
 	waitVisibleSelector := `path[d="` + ai.DAttributeOfWaitVisible + `"]`
+
 	if err := chromedp.Run(ctx,
 		chromedp.Navigate(nav),
 		chromedp.Sleep(d),
-		chromedp.SendKeys(ai.SendKeys, question+"\n"),
+		chromedp.Evaluate(`document.activeElement.id`, &activeElementId),
+	); err != nil {
+		return "", fmt.Errorf("1st run failed %s: %v activeElementClass %v", nav, err, activeElementId)
+	}
+	fmt.Println(activeElementId)
+	fmt.Println(answer)
+
+	if err := chromedp.Run(ctx,
+		// chromedp.Sleep(d),
+		chromedp.SetValue(`#`+activeElementId, question, chromedp.ByQuery),
+		chromedp.SendKeys(ai.SendKeys, "\n"),
 		chromedp.WaitVisible(waitVisibleSelector),
 		chromedp.InnerHTML(ai.InnerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
-		return "", fmt.Errorf("failed getting body of %s: %v", nav, err)
+		return "", fmt.Errorf("2nd run failed %s: %v activeElementClass %v", nav, err, activeElementId)
 	}
-	fmt.Println(answer)
 	return answer, nil
 }
