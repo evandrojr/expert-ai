@@ -44,11 +44,7 @@ go run .
 
 [whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/32px-WhatsApp.svg.png
 
-
-<video width = "640" height = "360" controls >
-<video source src = "https://www.youtube.com/embed/DUsHbOLWZCk?si=9kme0py7wVjwxGh5" type = "video/mp4">
-Seu navegador não suporta o elemento de vídeo.
-</video>
+Watch demo: https://www.youtube.com/embed/DUsHbOLWZCk?si=9kme0py7wVjwxGh5
 
 ## Project Naming Convention
 
