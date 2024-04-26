@@ -1,12 +1,12 @@
 Backlog #####################################
 
-Submit combined answers 
 
 
 
 Doing #######################################
 
-Answer's data plumbing
 
 Done! #######################################
 Minimize interfaces
+Answer's data plumbing
+Submit combined answers 

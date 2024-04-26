@@ -1,4 +1,16 @@
-# Expert-ai
+# Expert-AI
+
+## Description
+
+Expert-AI is an AI response's compiler. A program that accesses different artificial intelligences, collects the responses they provide to the same question, and then synthesizes a final response based on the obtained information.
+
+## Features
+
+1. Connect to multiple available artificial intelligence (AI) systems;
+1. Send a question to the accessed AIs;
+1. Collect the individual responses from each AI;
+1. Analyze and synthesize a consolidated final response.
+
 
 ## Install
 
