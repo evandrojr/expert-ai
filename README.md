@@ -44,7 +44,9 @@ go run .
 
 [whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/32px-WhatsApp.svg.png
 
-Watch demo: https://www.youtube.com/embed/DUsHbOLWZCk?si=9kme0py7wVjwxGh5
+## Demo
+
+https://www.youtube.com/embed/DUsHbOLWZCk?si=9kme0py7wVjwxGh5
 
 ## Project Naming Convention
 
