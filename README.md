@@ -33,9 +33,9 @@ go run .
 
 ## Getting in touch
 
-[+5571982864766![WhatsApp][whatsapp-logo]](https://wa.me/5571982864766)
+[+5571982864766 ![WhatsApp][whatsapp-logo]](https://wa.me/5571982864766)
 
-[whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/200px-WhatsApp.svg.png
+[whatsapp-logo]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/32px-WhatsApp.svg.png
 
 ## Project Naming Convention
 
