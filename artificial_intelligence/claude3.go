@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"regexp"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -38,9 +37,7 @@ func (ai Claude3) SubmitPrompt(prompt string) (string, error) {
 func (ai Claude3) cleanAnswer(dirtAnswer string) string {
 	text := tool.HTMLToText(dirtAnswer)
 	text = tool.RemoveRubbishFromBeginning(text, text)
-	// text = tool.RemoveLine(text, 3)
-	regex := regexp.MustCompile(`\b(Claude-3-Haiku|Poe)\b`)
-	text = regex.ReplaceAllString(text, "")
+	text = tool.CleanPoeAnswer(text)
 	return text
 }
 
