@@ -48,7 +48,7 @@ go run .
 <video width = "640" height = "360" controls >
 <video source src = "https://www.youtube.com/embed/DUsHbOLWZCk?si=9kme0py7wVjwxGh5" type = "video/mp4">
 Seu navegador não suporta o elemento de vídeo.
-</video >
+</video>
 
 ## Project Naming Convention
 
