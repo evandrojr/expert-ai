@@ -9,5 +9,6 @@ func RemoveRubbishFromBeginning(fullText string, prompt string) string {
 	if index == -1 {
 		return fullText
 	}
+	index = index + len(prompt)
 	return fullText[index:]
 }

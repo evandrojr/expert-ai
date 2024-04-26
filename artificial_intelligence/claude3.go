@@ -29,14 +29,14 @@ func (ai Claude3) SubmitPrompt(prompt string) (string, error) {
 		return "", err
 	}
 
-	answer = ai.cleanAnswer(answer)
+	answer = ai.cleanAnswer(answer, prompt)
 
 	return answer, nil
 }
 
-func (ai Claude3) cleanAnswer(dirtAnswer string) string {
+func (ai Claude3) cleanAnswer(dirtAnswer string, prompt string) string {
 	text := tool.HTMLToText(dirtAnswer)
-	text = tool.RemoveRubbishFromBeginning(text, text)
+	text = tool.RemoveRubbishFromBeginning(text, prompt)
 	text = tool.CleanPoeAnswer(text)
 	return text
 }

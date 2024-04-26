@@ -30,12 +30,17 @@ por mensagem
 Ver detalhes
 oficial
 Informações do bot
-· OFFICIAL`
+· OFFICIAL
+Poe
+Conte-me mais\.`
 
 	regexes := strings.Split(regexesString, "\n")
 
 	for _, regex := range regexes {
-		regexCompiled := regexp.MustCompile(`(?i)` + regex + `\s+`)
+		// regexCompiled := regexp.MustCompile(`\b(` + regex + `\b)\s+`)
+		// regexCompiled := regexp.MustCompile(regex + `\s+`)
+		regexCompiled := regexp.MustCompile(`(?i)` + regex + `\s*`)
+
 		clean = regexCompiled.ReplaceAllString(clean, "")
 	}
 

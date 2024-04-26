@@ -22,7 +22,7 @@ func main() {
 	fmt.Println("google-chrome --remote-debugging-port=9222")
 	doublePrompt("prompt.txt", "answer_poe.txt", "answer_chatgpt.txt", "combined_prompt.txt")
 	// tool.JoinFiles("prompt.txt", "prompts/compare_answers.txt", "answers/prompts_combined_answers.txt")
-	doublePrompt("prompts/combined_prompt.txt", "2ndAnswer_poe.txt", "2ndAnswer_chatgpt.txt", "2nCombined_prompt.txt")
+	doublePrompt("prompts/combined_prompt.txt", "2ndAnswer_poe.txt", "2ndAnswer_chatgpt.txt", "2ndCombined_prompt.txt")
 }
 
 func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
@@ -54,7 +54,7 @@ func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 	
 	`
 
-	compareAnswers, err := tool.ReadFile(promptFile)
+	compareAnswers, err := tool.ReadFile("prompts/" + "compare_answers.txt")
 	if err != nil {
 		panic(err)
 	}
