@@ -4,10 +4,23 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime"
+	"strings"
 )
 
 func ReadFile(filename string) (string, error) {
 	// Read the entire file into a byte slice.
+
+	var pathSeparator string
+	if runtime.GOOS == "windows" {
+		pathSeparator = "\\"
+	} else {
+		pathSeparator = "/"
+	}
+
+	// Adjust the filename to use the correct path separator
+	filename = strings.ReplaceAll(filename, "/", pathSeparator)
+
 	b, err := os.ReadFile(filename)
 	if err != nil {
 		return "", err
@@ -20,6 +33,17 @@ func ReadFile(filename string) (string, error) {
 }
 
 func WriteFile(filename string, data string) error {
+
+	var pathSeparator string
+	if runtime.GOOS == "windows" {
+		pathSeparator = "\\"
+	} else {
+		pathSeparator = "/"
+	}
+
+	// Adjust the filename to use the correct path separator
+	filename = strings.ReplaceAll(filename, "/", pathSeparator)
+
 	// Create the file.
 	f, err := os.Create(filename)
 	if err != nil {
