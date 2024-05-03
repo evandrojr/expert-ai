@@ -10,16 +10,7 @@ import (
 
 func ReadFile(filename string) (string, error) {
 	// Read the entire file into a byte slice.
-
-	var pathSeparator string
-	if runtime.GOOS == "windows" {
-		pathSeparator = "\\"
-	} else {
-		pathSeparator = "/"
-	}
-
-	// Adjust the filename to use the correct path separator
-	filename = strings.ReplaceAll(filename, "/", pathSeparator)
+	filename = AdjustPathForWindows(filename)
 
 	b, err := os.ReadFile(filename)
 	if err != nil {
@@ -32,7 +23,7 @@ func ReadFile(filename string) (string, error) {
 	return str, nil
 }
 
-func WriteFile(filename string, data string) error {
+func AdjustPathForWindows(filenameWithPath string) string{
 
 	var pathSeparator string
 	if runtime.GOOS == "windows" {
@@ -42,8 +33,12 @@ func WriteFile(filename string, data string) error {
 	}
 
 	// Adjust the filename to use the correct path separator
-	filename = strings.ReplaceAll(filename, "/", pathSeparator)
+	return strings.ReplaceAll(filenameWithPath, "/", pathSeparator)
+}
 
+func WriteFile(filename string, data string) error {
+
+	filename = AdjustPathForWindows(filename)
 	// Create the file.
 	f, err := os.Create(filename)
 	if err != nil {
@@ -65,6 +60,11 @@ func WriteFile(filename string, data string) error {
 }
 
 func JoinFiles(arquivo1, arquivo2, arquivoUnido string) error {
+
+	arquivo1 	 = AdjustPathForWindows(arquivo1)
+	arquivo2 	 = AdjustPathForWindows(arquivo2)
+	arquivoUnido = AdjustPathForWindows(arquivoUnido)
+
 	// Abrir o primeiro arquivo
 	f1, err := os.Open(arquivo1)
 	if err != nil {
@@ -98,4 +98,17 @@ func JoinFiles(arquivo1, arquivo2, arquivoUnido string) error {
 
 	fmt.Println("Arquivos unidos com sucesso!")
 	return nil
+}
+
+func CreateDirectoryIfNotExists(path string) error {
+    // Verifica se o diretório já existe
+    _, err := os.Stat(path)
+    if os.IsNotExist(err) {
+        // Cria o diretório e qualquer diretório pai necessário
+        err = os.MkdirAll(path, 0755)
+        if err != nil {
+            return err
+        }
+    }
+    return nil
 }

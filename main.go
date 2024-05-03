@@ -3,15 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/container"
 	"fyne.io/fyne/widget"
 
-	// "fyne.io/fyne/widget"
 	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
 	"github.com/evandrojr/expert-ai/tools"
-	// "fyne.io/fyne/v2/widget"
 )
 
 func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) string {
@@ -27,6 +26,13 @@ func main() {
 	fmt.Println("Run:")
 	fmt.Println("killall chrome")
 	fmt.Println("google-chrome --remote-debugging-port=9222")
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Erro ao obter o diretório de trabalho:", err)
+		return
+	}
+	tools.CreateDirectoryIfNotExists(dir + "/answers")
+
 	ui()
 }
 
