@@ -1,9 +1,11 @@
-package tool
+package filesystem
 
 import (
 	"fmt"
 	"io"
 	"os"
+	"os/user"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -109,4 +111,24 @@ func CreateDirectoryIfNotExists(path string) error {
 		}
 	}
 	return nil
+}
+
+func JoinPaths(parts ...string) string {
+	separator := "/"
+	if os.PathSeparator == '\\' {
+		separator = "\\"
+	}
+
+	return filepath.Join(append([]string{separator}, parts...)...)
+}
+
+func GetHomeDir() (string, error) {
+	// Obter o usuário atual
+	user, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+
+	// Retornar o diretório home
+	return user.HomeDir, nil
 }

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
+
+	"github.com/evandrojr/expert-ai/filesystem"
 )
 
 func TestCleanPoeAnswerTest(t *testing.T) {
@@ -15,7 +17,7 @@ func TestCleanPoeAnswerTest(t *testing.T) {
 	}
 	fmt.Println("Diretório de execução:", dir)
 
-	dirt, err := ReadFile(dir + "/texts/poe_dirt_answer.txt")
+	dirt, err := filesystem.ReadFile(dir + "/texts/poe_dirt_answer.txt")
 	if err != nil {
 		panic(err)
 	}

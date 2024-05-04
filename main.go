@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/widget"
 
 	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
+	"github.com/evandrojr/expert-ai/filesystem"
 	"github.com/evandrojr/expert-ai/tool"
 )
 
@@ -31,7 +32,7 @@ func main() {
 		fmt.Println("Erro ao obter o diretório de trabalho:", err)
 		return
 	}
-	tool.CreateDirectoryIfNotExists(dir + "/answers")
+	filesystem.CreateDirectoryIfNotExists(dir + "/answers")
 
 	ui()
 }
@@ -39,7 +40,7 @@ func main() {
 func ui() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Type a prompt:")
-	prompt, err := tool.ReadFile("prompt.txt")
+	prompt, err := filesystem.ReadFile("prompt.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -57,7 +58,7 @@ func ui() {
 
 	submitButton := widget.NewButton("Submit prompt", func() {
 		log.Println("Content was:", input.Text)
-		err := tool.WriteFile("prompt.txt", input.Text)
+		err := filesystem.WriteFile("prompt.txt", input.Text)
 		if err != nil {
 			panic(err)
 		}
@@ -72,7 +73,7 @@ func ui() {
 
 func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 
-	prompt, err := tool.ReadFile(promptFile)
+	prompt, err := filesystem.ReadFile(promptFile)
 	if err != nil {
 		panic(err)
 	}
@@ -82,7 +83,7 @@ func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 	var claude3 artificialintelligence.Claude3
 	answerClaude := sendPrompt(claude3, prompt)
 
-	err = tool.WriteFile("answers/"+answer1File, answerClaude)
+	err = filesystem.WriteFile("answers/"+answer1File, answerClaude)
 	if err != nil {
 		panic(err)
 	}
@@ -90,7 +91,7 @@ func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 	var chatgpt artificialintelligence.Chatgpt
 	answerChatgpt := sendPrompt(chatgpt, prompt)
 
-	err = tool.WriteFile("answers/"+answer2File, answerChatgpt)
+	err = filesystem.WriteFile("answers/"+answer2File, answerChatgpt)
 	if err != nil {
 		panic(err)
 	}
@@ -99,7 +100,7 @@ func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 	
 	`
 
-	compareAnswers, err := tool.ReadFile("prompts/" + "compare_answers.txt")
+	compareAnswers, err := filesystem.ReadFile("prompts/" + "compare_answers.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -109,10 +110,10 @@ func doublePrompt(promptFile, answer1File, answer2File, combinedPrompt string) {
 		headerForAnswer1 + answerClaude +
 		headerForAnswer2 + answerChatgpt
 
-	err = tool.WriteFile("prompts/"+combinedPrompt, combinedPromptText)
+	err = filesystem.WriteFile("prompts/"+combinedPrompt, combinedPromptText)
 	if err != nil {
 		panic(err)
 	}
-	// tool.JoinFiles("answers/"+answer1File, "answers/"+answer2File, "answers/"+combinedAnswers)
+	// filesystem.JoinFiles("answers/"+answer1File, "answers/"+answer2File, "answers/"+combinedAnswers)
 
 }
