@@ -24,7 +24,7 @@ Expert-AI is an AI response's compiler. A program that accesses different artifi
 1. Install Go from https://go.dev/ or using gvm https://github.com/moovweb/gvm 
 1. Install Fyne: https://docs.fyne.io/started/ 
 1. Install Chromium browser
-1. Setup your chromium to use English as the main language ![setup-language](resources/setup-language.png)
+1. Setup Chromium to use English as the main language ![setup-language](resources/setup-language.png)
 
 
 ```
