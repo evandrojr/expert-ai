@@ -3,7 +3,6 @@ package filesystem
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -134,14 +133,10 @@ func GetHomeDir() (string, error) {
 	return user.HomeDir, nil
 }
 
-func FileExists(filePath string) bool {
-	_, err := os.Stat(filePath)
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
 		return false
-	} else if err == nil {
-		return true
 	}
-	log.Fatal("Error checking file existence: " + filePath)
-	return false
-
+	return !info.IsDir()
 }
