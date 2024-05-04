@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-killall chrome
-google-chrome --remote-debugging-port=9222
+killall chromium
+chromium --remote-debugging-port=9222

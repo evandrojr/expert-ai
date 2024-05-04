@@ -70,7 +70,7 @@ func (ai Claude3) scrape(ctx context.Context, verbose bool, nav string, d time.D
 	if err := chromedp.Run(ctx,
 		// chromedp.Sleep(d),
 		chromedp.SetValue(`.`+activeElementClass, question, chromedp.ByQuery),
-		chromedp.SendKeys(ai.SendKeys, "\n"),
+		chromedp.SendKeys(`.`+activeElementClass, "\n"),
 		chromedp.WaitVisible(waitVisibleSelector),
 		chromedp.InnerHTML(ai.InnerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
