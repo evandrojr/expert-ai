@@ -24,8 +24,8 @@ func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string)
 
 func main() {
 	fmt.Println("Run:")
-	fmt.Println("killall chrome")
-	fmt.Println("google-chrome --remote-debugging-port=9222")
+	fmt.Println("killall chromium")
+	fmt.Println("chromium --remote-debugging-port=9222")
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println("Erro ao obter o diretório de trabalho:", err)
@@ -50,7 +50,7 @@ func ui() {
 
 	prepareButton := widget.NewButton("Prepare", func() {
 		// go  func(){
-		tools.PrepareChrome()
+		tools.PrepareBrowser()
 		// }
 
 	})

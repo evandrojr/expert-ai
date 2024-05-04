@@ -1,18 +1,20 @@
 package tools
 
 import (
+	"fmt"
 	"os/exec"
 )
 
-func PrepareChrome() error {
-	// Executar o comando "killall chrome"
-	err := exec.Command("killall", "chrome").Run()
+func PrepareBrowser() error {
+	// Executar o comando "killall chromium"
+	err := exec.Command("killall", "chromium").Run()
 	if err != nil {
-		return err
+		fmt.Println(err)
+		// return err
 	}
 
-	// Executar o comando "google-chrome --remote-debugging-port=9222"
-	err = exec.Command("google-chrome", "--remote-debugging-port=9222").Start()
+	// Executar o comando "google-chromium --remote-debugging-port=9222"
+	err = exec.Command("chromium", "--remote-debugging-port=9222").Start()
 	if err != nil {
 		return err
 	}
