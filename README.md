@@ -30,11 +30,11 @@ echo "Who invented the airplane" > prompt.txt
 ```
 
 ## Run
-Close chromium before and run it with chromiumdp enabled.
+Close chromium before and run it with googledp enabled.
 
 ```
 killall chromium
-google-chromium --remote-debugging-port=9222
+chromium --remote-debugging-port=9222
 go run .
 ```
 
