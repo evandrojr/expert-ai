@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
-	"github.com/evandrojr/expert-ai/tools"
 )
 
 func (ai Chatgpt) Setup() ArtificialIntelligence {
@@ -32,7 +31,7 @@ func (ai Chatgpt) SubmitPrompt(prompt string) (string, error) {
 		return "", err
 	}
 
-	return tools.HTMLToText(answer), nil
+	return tool.HTMLToText(answer), nil
 }
 
 func (ai Chatgpt) setupContext() (context.Context, context.CancelFunc) {

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
-	"github.com/evandrojr/expert-ai/tools"
+	"github.com/evandrojr/expert-ai/tool"
 )
 
 func (ai Claude3) Setup() ArtificialIntelligence {
@@ -35,9 +35,9 @@ func (ai Claude3) SubmitPrompt(prompt string) (string, error) {
 }
 
 func (ai Claude3) cleanAnswer(dirtAnswer string, prompt string) string {
-	text := tools.HTMLToText(dirtAnswer)
-	text = tools.RemoveRubbishFromBeginning(text, prompt)
-	text = tools.CleanPoeAnswer(text)
+	text := tool.HTMLToText(dirtAnswer)
+	text = tool.RemoveRubbishFromBeginning(text, prompt)
+	text = tool.CleanPoeAnswer(text)
 	return text
 }
 
