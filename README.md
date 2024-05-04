@@ -13,15 +13,19 @@ Expert-AI is an AI response's compiler. A program that accesses different artifi
 
 ## Features
 
-1. Connect to multiple available artificial intelligence (AI) systems;
-1. Send a question to the accessed AIs;
-1. Collect the individual responses from each AI;
-1. Analyze and synthesize a consolidated final response.
+1. Connect to multiple available artificial intelligence (AI) systems
+1. Send a question to the accessed AIs
+1. Collect the individual responses from each AI
+1. Analyze and synthesize a consolidated final response
 
 
 ## Install
 
-Install Go from https://go.dev/ or using gvm https://github.com/moovweb/gvm .
+1. Install Go from https://go.dev/ or using gvm https://github.com/moovweb/gvm 
+1. Install Fyne: https://docs.fyne.io/started/ 
+1. Install Chromium browser
+1. Setup your chromium to use English as the main language ![setup-language](resources/setup-language.png)
+
 
 ```
 git clone git@github.com:evandrojr/expert-ai.git
@@ -30,7 +34,7 @@ echo "Who invented the airplane" > prompt.txt
 ```
 
 ## Run
-Close chromium before and run it with googledp enabled.
+Close chromium and run it with googledp enabled.
 
 ```
 killall chromium
