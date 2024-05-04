@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/widget"
 
 	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
+	"github.com/evandrojr/expert-ai/config"
 	"github.com/evandrojr/expert-ai/filesystem"
 	"github.com/evandrojr/expert-ai/tool"
 )
@@ -27,6 +28,8 @@ func main() {
 	fmt.Println("Run:")
 	fmt.Println("killall chromium")
 	fmt.Println("chromium --remote-debugging-port=9222")
+	config.Init()
+	// os.Exit(0)
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println("Erro ao obter o diretório de trabalho:", err)

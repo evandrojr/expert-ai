@@ -1,8 +1,8 @@
-package tool
+package log
 
 import "log"
 
-func LogFatal(error string) {
+func Fatal(error string) {
 	log.Println(error)
 	panic(error)
 }
