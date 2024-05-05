@@ -22,7 +22,7 @@ type SettingsStruct struct {
 	AnswerLanguage              string
 }
 
-var Settings = SettingsStruct{
+var settingsDefault = SettingsStruct{
 	Browser:                     "chromium",
 	KillAndLoadBrowserAtStartUp: true,
 	PromptChatGpt3_5:            true,
@@ -33,6 +33,8 @@ var Settings = SettingsStruct{
 	SynthesizeAnswer:            "Analyze the two responses and synthesize a single response that captures the main points of both responses. Your response should be concise, clear, and cover the main points of responses to create a correct, and complete response.",
 	AnswerLanguage:              "English",
 }
+
+var Settings = SettingsStruct{}
 
 var HomeDir string
 var ConfigDir string
@@ -53,15 +55,16 @@ func Init() {
 	if filesystem.FileExists(ConfigFile) {
 		Load()
 	} else {
-		Save()
+		SaveDefautSettings()
 	}
 
 }
 
-func Save() {
-	jsonBytes, err := json.MarshalIndent(&Settings, "", "    ")
+func SaveDefautSettings() {
+	jsonBytes, err := json.MarshalIndent(&settingsDefault, "", "    ")
 	ierror.PanicOnError(err)
-	err = filesystem.WriteFile(ConfigFile, string(jsonBytes))
+	jsonString := string(jsonBytes)
+	err = WriteSettingsFile(jsonString)
 	ierror.PanicOnError(err)
 }
 
@@ -76,6 +79,10 @@ func Load() {
 
 func GetSettingsString() (string, error) {
 	return filesystem.ReadFile(ConfigFile)
+}
+
+func WriteSettingsFile(jsonString string) error {
+	return filesystem.WriteFile(ConfigFile, jsonString)
 }
 
 func BrowserExecutableFileName() string {
