@@ -68,6 +68,14 @@ func SaveDefautSettings() {
 	ierror.PanicOnError(err)
 }
 
+func SaveSettings() {
+	jsonBytes, err := json.MarshalIndent(&Settings, "", "    ")
+	ierror.PanicOnError(err)
+	jsonString := string(jsonBytes)
+	err = WriteSettingsFile(jsonString)
+	ierror.PanicOnError(err)
+}
+
 func Load() {
 	settingsData, err := GetSettingsString()
 	ierror.PanicOnError(err)

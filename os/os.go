@@ -1,8 +1,9 @@
 package os
 
 import (
-	"github.com/evandrojr/expert-ai/config"
 	"os/exec"
+
+	"github.com/evandrojr/expert-ai/config"
 )
 
 func IsProcessRunning(processName string) bool {
@@ -24,6 +25,11 @@ func KillBrowser() {
 
 func RunBrowser() error {
 	err := exec.Command(config.BrowserExecutableFileName(), "--remote-debugging-port=9222").Start()
+	if err != nil {
+		return err
+	}
+
+	err = exec.Command(config.BrowserExecutableFileName(), "--remote-debugging-port=9223").Start()
 	if err != nil {
 		return err
 	}

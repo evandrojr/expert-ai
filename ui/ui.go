@@ -86,6 +86,7 @@ func getSettingsContainer() *container.Split {
 
 	saveButton := widget.NewButton("Save settings", func() {
 		config.WriteSettingsFile(settingsTextarea.Text)
+		config.Load()
 		finishedChan := make(chan bool)
 		progressWindow := ShowProgressWindow("Saving settings", finishedChan)
 		finished := <-finishedChan
@@ -167,7 +168,7 @@ func getPromptContainer() *container.Split {
 		SubmitPrompt(promptTextarea.Text)
 	})
 
-	prepareButton := widget.NewButton("Prepare browser", func() {
+	prepareButton := widget.NewButton("Launch browser", func() {
 		os.PrepareBrowser()
 	})
 	hBoxButtons := container.NewHBox(submitButton, prepareButton)
@@ -188,19 +189,34 @@ func Build() {
 		container.NewTabItem("Prompt", getPromptContainer()),
 		container.NewTabItem("AI models", widget.NewLabel("AI models")),
 		container.NewTabItem("Settings", getSettingsContainer()),
-		container.NewTabItem("See Logs", getLogContainer()),
+		container.NewTabItem("Logs", getLogContainer()),
 	)
 
 	tabs.SetTabLocation(container.TabLocationTrailing)
 	mainWindow.SetContent(tabs)
 	mainWindow.ShowAndRun()
+	// mainWindow.RequestFocus()
 }
 
 func SubmitPrompt(promptText string) {
 	log.Println("Content was:", promptText)
 	config.Settings.Prompt = promptText
-	config.SaveDefautSettings()
+	config.SaveSettings()
 	go logic.Prompt(config.Settings)
-	answer := <-logic.AnswerChan
-	TextWindow(answer.Answer, answer.Title)
+	answer, ok := <-logic.AnswerChan
+	if ok {
+		if answer.Error != nil {
+			ShowErrorWindow(answer.Error.Error())
+		} else {
+			TextWindow(answer.Answer, answer.Title)
+		}
+	}
+	answer, ok = <-logic.AnswerChan
+	if ok {
+		if answer.Error != nil {
+			ShowErrorWindow(answer.Error.Error())
+		} else {
+			TextWindow(answer.Answer, answer.Title)
+		}
+	}
 }

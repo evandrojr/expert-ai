@@ -30,7 +30,10 @@ func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string)
 
 	var _ai = ai.Setup()
 	answer, err := _ai.SubmitPrompt(prompt)
-	ierror.PanicOnError(err)
+	if err != nil {
+		return "", err
+	}
+	// ierror.PanicOnError(err)
 	return answer, nil
 }
 
@@ -45,11 +48,12 @@ func RunClaudeIfRequired(settings config.SettingsStruct) {
 		err = filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "claude3.txt"), answerClaude)
 		if err != nil {
 			AnswerChan <- AnswerStruct{Error: err}
+
 			return
 		}
 		ierror.PanicOnError(err)
 	} else {
-		AnswerChan <- AnswerStruct{Answer: "[no answert from Claude 3]", Title: "Answer Claude 3"}
+		AnswerChan <- AnswerStruct{Error: errors.New("norun")}
 	}
 }
 
@@ -68,7 +72,7 @@ func RunChatGptIfRequired(settings config.SettingsStruct) {
 		}
 		AnswerChan <- AnswerStruct{Answer: answerChatgpt, Title: "Answer ChatGPT 3.5"}
 	} else {
-		AnswerChan <- AnswerStruct{Answer: "[no answert from ChatGPT]", Title: "Answer ChatGPT 3.5"}
+		AnswerChan <- AnswerStruct{Error: errors.New("norun")}
 	}
 }
 
