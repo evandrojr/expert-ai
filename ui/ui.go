@@ -17,11 +17,13 @@ var ui fyne.App
 func TextWindow(text string, title string) {
 	newWindow := ui.NewWindow(title)
 	newWindow.Resize(fyne.NewSize(400, 250))
-	label := widget.NewLabel(text)
+	label := widget.NewMultiLineEntry()
+	label.Resize(fyne.NewSize(350, 240))
+	label.SetText(text)
 	label.Wrapping = fyne.TextWrapBreak
-	newWindow.SetContent(container.NewVBox(
+	newWindow.SetContent(
 		label,
-	))
+	)
 	newWindow.Show()
 }
 
@@ -33,6 +35,7 @@ func Build() {
 	promptTextarea.SetPlaceHolder("Type a prompt:")
 	promptTextarea.SetText(config.Settings.Prompt)
 	promptTextarea.Resize(fyne.NewSize(500, 400))
+	promptTextarea.Wrapping = fyne.TextWrapBreak
 
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Prompt", promptTextarea),

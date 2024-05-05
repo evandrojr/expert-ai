@@ -27,7 +27,7 @@ func (ai Chatgpt) SubmitPrompt(prompt string) (string, error) {
 	ctx, _ := ai.setupContext()
 	// defer cancel()
 
-	answer, err := ai.scrape(ctx, true, ai.Url, 1*time.Second, prompt)
+	answer, err := ai.scrape(ctx, false, ai.Url, 1*time.Second, prompt)
 	if err != nil {
 		return "", err
 	}

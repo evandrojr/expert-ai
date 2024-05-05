@@ -41,8 +41,9 @@ func RunChatGptIfRequired(settings config.SettingsStruct) {
 		error.PanicOnError(err)
 		// answerChatgpt := "jfkjdjflksdj fds fkçkf adsf ~kljflãsd flsm dsalf al~kfasdlk jdsljf sdjfsdf sa~f dsflkjs ldafjsdl kçfsdjf sdjfkldsj fkjsdlfjl"
 		AnswerChan <- answerChatgpt
+	} else {
+		AnswerChan <- "Sem resposta para o ChatGPT"
 	}
-	AnswerChan <- "Sem resposta para o ChatGPT"
 }
 
 func Prompt(settings config.SettingsStruct) {
