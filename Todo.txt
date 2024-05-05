@@ -1,13 +1,14 @@
 Backlog #####################################
 
 Treat panics
-Configuration option
 
 
 Doing #######################################
 
+Run two browsers in paralell
 
 Done! #######################################
+Configuration option
 Minimize interfaces
 Answer's data plumbing
 Submit combined answers 
