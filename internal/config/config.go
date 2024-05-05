@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evandrojr/expert-ai/def"
-	"github.com/evandrojr/expert-ai/filesystem"
-	"github.com/evandrojr/expert-ai/ierror"
+	"github.com/evandrojr/expert-ai/internal/def"
+	"github.com/evandrojr/expert-ai/internal/filesystem"
+	"github.com/evandrojr/expert-ai/internal/ierror"
 )
 
 type SettingsStruct struct {

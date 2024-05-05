@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
-	"github.com/evandrojr/expert-ai/tool"
+	"github.com/evandrojr/expert-ai/internal/tool"
 )
 
 func (ai Chatgpt) Setup() ArtificialIntelligence {

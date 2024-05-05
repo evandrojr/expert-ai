@@ -3,7 +3,7 @@ package os
 import (
 	"os/exec"
 
-	"github.com/evandrojr/expert-ai/config"
+	"github.com/evandrojr/expert-ai/internal/config"
 )
 
 func IsProcessRunning(processName string) bool {

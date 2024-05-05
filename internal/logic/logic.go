@@ -3,11 +3,11 @@ package logic
 import (
 	"errors"
 
-	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
-	"github.com/evandrojr/expert-ai/config"
-	"github.com/evandrojr/expert-ai/filesystem"
-	"github.com/evandrojr/expert-ai/ierror"
-	"github.com/evandrojr/expert-ai/os"
+	artificialintelligence "github.com/evandrojr/expert-ai/internal/artificial_intelligence"
+	"github.com/evandrojr/expert-ai/internal/config"
+	"github.com/evandrojr/expert-ai/internal/filesystem"
+	"github.com/evandrojr/expert-ai/internal/ierror"
+	"github.com/evandrojr/expert-ai/internal/os"
 )
 
 var AnswerChan chan AnswerStruct

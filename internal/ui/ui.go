@@ -8,11 +8,11 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
-	"github.com/evandrojr/expert-ai/config"
-	"github.com/evandrojr/expert-ai/filesystem"
-	"github.com/evandrojr/expert-ai/ierror"
-	"github.com/evandrojr/expert-ai/logic"
-	"github.com/evandrojr/expert-ai/os"
+	"github.com/evandrojr/expert-ai/internal/config"
+	"github.com/evandrojr/expert-ai/internal/filesystem"
+	"github.com/evandrojr/expert-ai/internal/ierror"
+	"github.com/evandrojr/expert-ai/internal/logic"
+	"github.com/evandrojr/expert-ai/internal/os"
 )
 
 var ui fyne.App

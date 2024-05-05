@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evandrojr/expert-ai/filesystem"
+	"github.com/evandrojr/expert-ai/internal/filesystem"
 )
 
 func TestRemoveRubbishFromBeginning(t *testing.T) {
