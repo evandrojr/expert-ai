@@ -32,7 +32,7 @@ var settingsDefault = SettingsStruct{
 	Prompt:                      "",
 	BasedOnTheQuestion:          "Based on the question:",
 	SynthesizeAnswer:            "Analyze the two responses and synthesize a single response that captures the main points of both responses. Your response should be concise, clear, and cover the main points of responses to create a correct, and complete response.",
-	AnswerLanguage:              "English",
+	AnswerLanguage:              "english",
 }
 
 var Settings = SettingsStruct{}

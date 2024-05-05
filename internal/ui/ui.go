@@ -205,7 +205,7 @@ func SubmitPrompt(promptText string) {
 	go logic.Prompt(config.Settings)
 	answer, ok := <-logic.AnswerChan
 	if ok {
-		if answer.Error != nil {
+		if answer.Error != nil && answer.Error.Error() != "norun" {
 			ShowErrorWindow(answer.Error.Error())
 		} else {
 			TextWindow(answer.Answer, answer.Title)
@@ -213,7 +213,7 @@ func SubmitPrompt(promptText string) {
 	}
 	answer, ok = <-logic.AnswerChan
 	if ok {
-		if answer.Error != nil {
+		if answer.Error != nil && answer.Error.Error() != "norun" {
 			ShowErrorWindow(answer.Error.Error())
 		} else {
 			TextWindow(answer.Answer, answer.Title)
