@@ -2,6 +2,7 @@ package ui
 
 import (
 	"log"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -28,6 +29,25 @@ func TextWindow(text string, title string) {
 	newWindow.Show()
 }
 
+func ShowProgressWindow(mensage string, finished chan bool) fyne.Window {
+	newWindow := ui.NewWindow("Wait")
+	newWindow.CenterOnScreen()
+
+	progress := widget.NewProgressBar()
+
+	go func() {
+		for i := 0.0; i <= 1.0; i += 0.1 {
+			time.Sleep(time.Millisecond * 100)
+			progress.SetValue(i)
+		}
+		finished <- true
+	}()
+	label := widget.NewLabel(mensage)
+	newWindow.SetContent(container.NewVBox(label, progress))
+	newWindow.Show()
+	return newWindow
+}
+
 func getPromptTextarea() *widget.Entry {
 	promptTextarea := widget.NewMultiLineEntry()
 	promptTextarea.SetPlaceHolder("Type a prompt:")
@@ -48,6 +68,12 @@ func getSettingsContainer() *container.Split {
 
 	saveButton := widget.NewButton("Save settings", func() {
 		config.WriteSettingsFile(settingsTextarea.Text)
+		finishedChan := make(chan bool)
+		progressWindow := ShowProgressWindow("Saving settings", finishedChan)
+		finished := <-finishedChan
+		if finished {
+			progressWindow.Close()
+		}
 	})
 
 	restoreDefaulstButton := widget.NewButton("Restore defaults", func() {
@@ -55,6 +81,12 @@ func getSettingsContainer() *container.Split {
 		config.Load()
 		settings, err = config.GetSettingsString()
 		ierror.PanicOnError(err)
+		finishedChan := make(chan bool)
+		progressWindow := ShowProgressWindow("Restoring defaults", finishedChan)
+		finished := <-finishedChan
+		if finished {
+			progressWindow.Close()
+		}
 		settingsTextarea.SetText(settings)
 	})
 
