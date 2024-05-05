@@ -16,6 +16,7 @@ var ui fyne.App
 
 func TextWindow(text string, title string) {
 	newWindow := ui.NewWindow(title)
+	newWindow.Resize(fyne.NewSize(400, 250))
 	label := widget.NewLabel(text)
 	label.Wrapping = fyne.TextWrapBreak
 	newWindow.SetContent(container.NewVBox(
@@ -27,6 +28,7 @@ func TextWindow(text string, title string) {
 func Build() {
 	ui = app.New()
 	window := ui.NewWindow("Expert AI")
+	window.Resize(fyne.NewSize(800, 600))
 	promptTextarea := widget.NewMultiLineEntry()
 	promptTextarea.SetPlaceHolder("Type a prompt:")
 	promptTextarea.SetText(config.Settings.Prompt)
@@ -46,10 +48,14 @@ func Build() {
 		os.PrepareBrowser()
 	})
 	bottonSplit := container.NewHBox(submitButton, prepareButton)
-	main := container.NewVSplit(tabs, bottonSplit)
+	centeredButtons := container.NewCenter(bottonSplit)
+	main := container.NewVSplit(tabs, centeredButtons)
+	main.SetOffset(.95)
+	main.Refresh()
+
 	tabs.SetTabLocation(container.TabLocationTrailing)
 	window.SetContent(main)
-	window.SetFullScreen(true)
+	// window.SetFullScreen(true)
 	window.ShowAndRun()
 }
 

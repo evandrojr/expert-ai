@@ -39,6 +39,7 @@ func RunChatGptIfRequired(settings config.SettingsStruct) {
 		answerChatgpt := sendPrompt(chatgpt, settings.Prompt)
 		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "ChatGPT3.5.txt"), answerChatgpt)
 		error.PanicOnError(err)
+		// answerChatgpt := "jfkjdjflksdj fds fkçkf adsf ~kljflãsd flsm dsalf al~kfasdlk jdsljf sdjfsdf sa~f dsflkjs ldafjsdl kçfsdjf sdjfkldsj fkjsdlfjl"
 		AnswerChan <- answerChatgpt
 	}
 	AnswerChan <- "Sem resposta para o ChatGPT"
