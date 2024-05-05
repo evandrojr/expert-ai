@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/evandrojr/expert-ai/def"
-	"github.com/evandrojr/expert-ai/error"
 	"github.com/evandrojr/expert-ai/filesystem"
+	"github.com/evandrojr/expert-ai/ierror"
 )
 
 type SettingsStruct struct {
@@ -41,14 +42,14 @@ var AnswersDir string
 func Init() {
 	err := errors.New("")
 	HomeDir, err = filesystem.GetHomeDir()
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	ConfigDir = filesystem.JoinPaths(HomeDir, ".config", def.APP_NAME)
 	ConfigFile = filesystem.JoinPaths(ConfigDir, def.CONFIG_FILENAME)
 	AnswersDir = filesystem.JoinPaths(ConfigDir, def.ANSWERS_DIR)
 	err = filesystem.CreateDirectoryIfNotExists(ConfigDir)
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	err = filesystem.CreateDirectoryIfNotExists(AnswersDir)
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	if filesystem.FileExists(ConfigFile) {
 		Load()
 	} else {
@@ -59,18 +60,22 @@ func Init() {
 
 func Save() {
 	jsonBytes, err := json.MarshalIndent(&Settings, "", "    ")
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	err = filesystem.WriteFile(ConfigFile, string(jsonBytes))
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 }
 
 func Load() {
-	settingsData, err := filesystem.ReadFile(ConfigFile)
-	error.PanicOnError(err)
+	settingsData, err := GetSettingsString()
+	ierror.PanicOnError(err)
 	settingsDataBytes := []byte(settingsData)
 	err = json.Unmarshal(settingsDataBytes, &Settings)
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	fmt.Println(Settings)
+}
+
+func GetSettingsString() (string, error) {
+	return filesystem.ReadFile(ConfigFile)
 }
 
 func BrowserExecutableFileName() string {

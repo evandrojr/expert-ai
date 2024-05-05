@@ -3,22 +3,27 @@ package logic
 import (
 	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
 	"github.com/evandrojr/expert-ai/config"
-	"github.com/evandrojr/expert-ai/error"
 	"github.com/evandrojr/expert-ai/filesystem"
+	"github.com/evandrojr/expert-ai/ierror"
 	"github.com/evandrojr/expert-ai/os"
 )
 
-var AnswerChan chan string
+var AnswerChan chan AnswerStruct
+
+type AnswerStruct struct {
+	Answer string
+	Title  string
+}
 
 func Init() {
-	AnswerChan = make(chan string)
+	AnswerChan = make(chan AnswerStruct)
 	StartBrowserIfNeed()
 }
 
 func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) string {
 	var _ai = ai.Setup()
 	answer, err := _ai.SubmitPrompt(prompt)
-	error.PanicOnError(err)
+	ierror.PanicOnError(err)
 	return answer
 }
 
@@ -27,7 +32,7 @@ func RunClaudeIfRequired(settings config.SettingsStruct) {
 		var claude3 artificialintelligence.Claude3
 		answerClaude := sendPrompt(claude3, settings.Prompt)
 		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "claude3.txt"), answerClaude)
-		error.PanicOnError(err)
+		ierror.PanicOnError(err)
 		// ui.TextWindow(answerClaude, "Answer Claude 3")
 
 	}
@@ -38,11 +43,10 @@ func RunChatGptIfRequired(settings config.SettingsStruct) {
 		var chatgpt artificialintelligence.Chatgpt
 		answerChatgpt := sendPrompt(chatgpt, settings.Prompt)
 		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "ChatGPT3.5.txt"), answerChatgpt)
-		error.PanicOnError(err)
-		// answerChatgpt := "jfkjdjflksdj fds fkçkf adsf ~kljflãsd flsm dsalf al~kfasdlk jdsljf sdjfsdf sa~f dsflkjs ldafjsdl kçfsdjf sdjfkldsj fkjsdlfjl"
-		AnswerChan <- answerChatgpt
+		ierror.PanicOnError(err)
+		AnswerChan <- AnswerStruct{Answer: answerChatgpt, Title: "Answer ChatGPT 3.5"}
 	} else {
-		AnswerChan <- "Sem resposta para o ChatGPT"
+		AnswerChan <- AnswerStruct{Answer: "[no answert from ChatGPT]", Title: "Answer ChatGPT 3.5"}
 	}
 }
 

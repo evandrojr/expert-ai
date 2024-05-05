@@ -37,6 +37,12 @@ func Build() {
 	promptTextarea.Resize(fyne.NewSize(500, 400))
 	promptTextarea.Wrapping = fyne.TextWrapBreak
 
+	settingsTextarea := widget.NewMultiLineEntry()
+	settingsTextarea.SetPlaceHolder("Type a prompt:")
+	settingsTextarea.SetText(config.Settings.Prompt)
+	settingsTextarea.Resize(fyne.NewSize(500, 400))
+	settingsTextarea.Wrapping = fyne.TextWrapBreak
+
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Prompt", promptTextarea),
 		container.NewTabItem("AI models", widget.NewLabel("AI models")),
@@ -67,5 +73,6 @@ func SubmitPrompt(promptText string) {
 	config.Settings.Prompt = promptText
 	config.Save()
 	go logic.Prompt(config.Settings)
-	TextWindow(<-logic.AnswerChan, "Resposta")
+	answer := <-logic.AnswerChan
+	TextWindow(answer.Answer, answer.Title)
 }
