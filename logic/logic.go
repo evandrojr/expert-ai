@@ -1,6 +1,8 @@
 package logic
 
 import (
+	"errors"
+
 	artificialintelligence "github.com/evandrojr/expert-ai/artificial_intelligence"
 	"github.com/evandrojr/expert-ai/config"
 	"github.com/evandrojr/expert-ai/filesystem"
@@ -13,6 +15,7 @@ var AnswerChan chan AnswerStruct
 type AnswerStruct struct {
 	Answer string
 	Title  string
+	Error  error
 }
 
 func Init() {
@@ -20,30 +23,49 @@ func Init() {
 	StartBrowserIfNeed()
 }
 
-func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) string {
+func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) (string, error) {
+	if !os.IsProcessRunning(config.Settings.Browser) {
+		return "", errors.New(`Launch browser with --remote-debugging-port=9222 or press "Launch browser" button`)
+	}
+
 	var _ai = ai.Setup()
 	answer, err := _ai.SubmitPrompt(prompt)
 	ierror.PanicOnError(err)
-	return answer
+	return answer, nil
 }
 
 func RunClaudeIfRequired(settings config.SettingsStruct) {
 	if settings.PromptClaude3 {
 		var claude3 artificialintelligence.Claude3
-		answerClaude := sendPrompt(claude3, settings.Prompt)
-		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "claude3.txt"), answerClaude)
+		answerClaude, err := sendPrompt(claude3, settings.Prompt)
+		if err != nil {
+			AnswerChan <- AnswerStruct{Error: err}
+			return
+		}
+		err = filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "claude3.txt"), answerClaude)
+		if err != nil {
+			AnswerChan <- AnswerStruct{Error: err}
+			return
+		}
 		ierror.PanicOnError(err)
-		// ui.TextWindow(answerClaude, "Answer Claude 3")
-
+	} else {
+		AnswerChan <- AnswerStruct{Answer: "[no answert from Claude 3]", Title: "Answer Claude 3"}
 	}
 }
 
 func RunChatGptIfRequired(settings config.SettingsStruct) {
 	if settings.PromptChatGpt3_5 {
 		var chatgpt artificialintelligence.Chatgpt
-		answerChatgpt := sendPrompt(chatgpt, settings.Prompt)
-		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "ChatGPT3.5.txt"), answerChatgpt)
-		ierror.PanicOnError(err)
+		answerChatgpt, err := sendPrompt(chatgpt, settings.Prompt)
+		if err != nil {
+			AnswerChan <- AnswerStruct{Error: err}
+			return
+		}
+		err = filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "ChatGPT3.5.txt"), answerChatgpt)
+		if err != nil {
+			AnswerChan <- AnswerStruct{Error: err}
+			return
+		}
 		AnswerChan <- AnswerStruct{Answer: answerChatgpt, Title: "Answer ChatGPT 3.5"}
 	} else {
 		AnswerChan <- AnswerStruct{Answer: "[no answert from ChatGPT]", Title: "Answer ChatGPT 3.5"}
