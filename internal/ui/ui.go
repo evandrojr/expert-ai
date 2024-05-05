@@ -168,7 +168,7 @@ func getPromptContainer() *container.Split {
 		SubmitPrompt(promptTextarea.Text)
 	})
 
-	launchButton := widget.NewButton("Launch browser", func() {
+	launchButton := widget.NewButton("Reload browser", func() {
 		os.ReloadBrowser()
 	})
 	hBoxButtons := container.NewHBox(submitButton, launchButton)

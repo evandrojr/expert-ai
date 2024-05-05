@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
+	"github.com/evandrojr/expert-ai/internal/config"
 	"github.com/evandrojr/expert-ai/internal/tool"
 )
 
@@ -16,6 +17,9 @@ func (ai Claude3) Setup() ArtificialIntelligence {
 		Url:                     "https://poe.com/Claude-3-Haiku",
 		SendKeys:                `textarea[placeholder="Talk to Claude-3-Haiku or @ a bot"]`,
 		InnerHTML:               `main`,
+	}
+	if config.Settings.BrowserLanguage == "portuguese" {
+		ai.SendKeys = `textarea[placeholder="ATUALIZAR"]`
 	}
 	return ai
 }
@@ -68,9 +72,11 @@ func (ai Claude3) scrape(ctx context.Context, verbose bool, nav string, d time.D
 	fmt.Println(answer)
 
 	if err := chromedp.Run(ctx,
-		// chromedp.Sleep(d),
+		chromedp.Sleep(d),
 		chromedp.SetValue(`.`+activeElementClass, question, chromedp.ByQuery),
-		chromedp.SendKeys(`.`+activeElementClass, "\n"),
+		chromedp.Sleep(d),
+
+		chromedp.SendKeys(ai.SendKeys, "\n"),
 		chromedp.WaitVisible(waitVisibleSelector),
 		chromedp.InnerHTML(ai.InnerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
