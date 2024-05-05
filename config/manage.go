@@ -39,7 +39,7 @@ var ConfigFile string
 var AnswersDir string
 
 func Init() {
-	err := errors.New("This is a custom error")
+	err := errors.New("")
 	HomeDir, err = filesystem.GetHomeDir()
 	error.PanicOnError(err)
 	ConfigDir = filesystem.JoinPaths(HomeDir, ".config", def.APP_NAME)
@@ -71,4 +71,11 @@ func Load() {
 	err = json.Unmarshal(settingsDataBytes, &Settings)
 	error.PanicOnError(err)
 	fmt.Println(Settings)
+}
+
+func BrowserExecutableFileName() string {
+	if Settings.Browser == "chrome" {
+		return "google-chrome"
+	}
+	return Settings.Browser
 }

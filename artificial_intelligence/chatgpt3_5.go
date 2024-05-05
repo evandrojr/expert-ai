@@ -66,7 +66,7 @@ func (ai Chatgpt) scrape(ctx context.Context, verbose bool, nav string, d time.D
 	if err := chromedp.Run(ctx,
 		// chromedp.Sleep(d),
 		chromedp.SetValue(`#`+activeElementId, question, chromedp.ByQuery),
-		chromedp.SendKeys(ai.SendKeys, "\n"),
+		chromedp.SendKeys(`#`+activeElementId, "\n"),
 		chromedp.WaitVisible(waitVisibleSelector),
 		chromedp.InnerHTML(ai.InnerHTML, &answer, chromedp.ByQuery),
 	); err != nil {
