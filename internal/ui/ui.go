@@ -168,10 +168,10 @@ func getPromptContainer() *container.Split {
 		SubmitPrompt(promptTextarea.Text)
 	})
 
-	prepareButton := widget.NewButton("Launch browser", func() {
-		os.PrepareBrowser()
+	launchButton := widget.NewButton("Launch browser", func() {
+		os.ReloadBrowser()
 	})
-	hBoxButtons := container.NewHBox(submitButton, prepareButton)
+	hBoxButtons := container.NewHBox(submitButton, launchButton)
 	centeredButtons := container.NewCenter(hBoxButtons)
 	split := container.NewVSplit(promptTextarea, centeredButtons)
 	split.SetOffset(.95)

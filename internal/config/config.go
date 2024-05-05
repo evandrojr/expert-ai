@@ -20,6 +20,7 @@ type SettingsStruct struct {
 	BasedOnTheQuestion          string
 	SynthesizeAnswer            string
 	AnswerLanguage              string
+	BrowserLanguage             string
 }
 
 var settingsDefault = SettingsStruct{

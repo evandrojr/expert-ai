@@ -8,13 +8,10 @@ import (
 
 func IsProcessRunning(processName string) bool {
 	_, err := exec.Command("pgrep", processName).Output()
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
-func PrepareBrowser() error {
+func ReloadBrowser() error {
 	KillBrowser()
 	return RunBrowser()
 }
@@ -29,9 +26,9 @@ func RunBrowser() error {
 		return err
 	}
 
-	err = exec.Command(config.BrowserExecutableFileName(), "--remote-debugging-port=9223").Start()
-	if err != nil {
-		return err
-	}
+	// err = exec.Command("google-chrome", "--remote-debugging-port=9223").Start()
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
