@@ -8,6 +8,13 @@ import (
 	"github.com/evandrojr/expert-ai/os"
 )
 
+var AnswerChan chan string
+
+func Init() {
+	AnswerChan = make(chan string)
+	StartBrowserIfNeed()
+}
+
 func sendPrompt(ai artificialintelligence.ArtificialIntelligence, prompt string) string {
 	var _ai = ai.Setup()
 	answer, err := _ai.SubmitPrompt(prompt)
@@ -21,6 +28,8 @@ func RunClaudeIfRequired(settings config.SettingsStruct) {
 		answerClaude := sendPrompt(claude3, settings.Prompt)
 		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "claude3.txt"), answerClaude)
 		error.PanicOnError(err)
+		// ui.TextWindow(answerClaude, "Answer Claude 3")
+
 	}
 }
 
@@ -30,7 +39,9 @@ func RunChatGptIfRequired(settings config.SettingsStruct) {
 		answerChatgpt := sendPrompt(chatgpt, settings.Prompt)
 		err := filesystem.WriteFile(filesystem.JoinPaths(config.AnswersDir, "ChatGPT3.5.txt"), answerChatgpt)
 		error.PanicOnError(err)
+		AnswerChan <- answerChatgpt
 	}
+	AnswerChan <- "Sem resposta para o ChatGPT"
 }
 
 func Prompt(settings config.SettingsStruct) {
@@ -60,10 +71,6 @@ func Prompt(settings config.SettingsStruct) {
 	//}
 	//// filesystem.JoinFiles("answers/"+answer1File, "answers/"+answer2File, "answers/"+combinedAnswers)
 
-}
-
-func Init() {
-	StartBrowserIfNeed()
 }
 
 func StartBrowserIfNeed() {

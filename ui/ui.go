@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"log"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -8,14 +10,23 @@ import (
 	"github.com/evandrojr/expert-ai/config"
 	"github.com/evandrojr/expert-ai/logic"
 	"github.com/evandrojr/expert-ai/os"
-	"log"
 )
 
-func Build() {
-	ui := app.New()
-	window := ui.NewWindow("Expert AI")
-	//window.Resize(fyne.NewSize(500, 400))
+var ui fyne.App
 
+func TextWindow(text string, title string) {
+	newWindow := ui.NewWindow(title)
+	label := widget.NewLabel(text)
+	label.Wrapping = fyne.TextWrapBreak
+	newWindow.SetContent(container.NewVBox(
+		label,
+	))
+	newWindow.Show()
+}
+
+func Build() {
+	ui = app.New()
+	window := ui.NewWindow("Expert AI")
 	promptTextarea := widget.NewMultiLineEntry()
 	promptTextarea.SetPlaceHolder("Type a prompt:")
 	promptTextarea.SetText(config.Settings.Prompt)
@@ -26,55 +37,20 @@ func Build() {
 		container.NewTabItem("AI models", widget.NewLabel("AI models")),
 		container.NewTabItem("Settings", widget.NewLabel("Settings")),
 	)
-	//tabs.MinSize()
 
 	submitButton := widget.NewButton("Submit prompt", func() {
 		SubmitPrompt(promptTextarea.Text)
-		// doublePrompt("prompt.txt", "answer_poe.txt", "answer_chatgpt.txt", "combined_prompt.txt")
-		// doublePrompt("prompts/combined_prompt.txt", "2ndAnswer_poe.txt", "2ndAnswer_chatgpt.txt", "2ndCombined_prompt.txt")
-
 	})
 
 	prepareButton := widget.NewButton("Prepare", func() {
-		// go  func(){
 		os.PrepareBrowser()
-		// }
-
 	})
 	bottonSplit := container.NewHBox(submitButton, prepareButton)
 	main := container.NewVSplit(tabs, bottonSplit)
-
-	//tabs.Append(container.NewTabItemWithIcon("Home", theme.HomeIcon(), widget.NewLabel("Home tab")))
-
 	tabs.SetTabLocation(container.TabLocationTrailing)
-
 	window.SetContent(main)
+	window.SetFullScreen(true)
 	window.ShowAndRun()
-	//window.FullScreen()
-	////prompt, err := filesystem.ReadFile("prompt.txt")
-	////error.PanicOnError(err)
-	//// window.SetContent(container.NewHSplit())
-	//
-	//list := widget.NewList(
-	//	func() int {
-	//		return len(data)
-	//	},
-	//	func() fyne.CanvasObject {
-	//		return widget.NewLabel("template")
-	//	},
-	//	func(i widget.ListItemID, o fyne.CanvasObject) {
-	//		o.(*widget.Label).SetText(data[i])
-	//	})
-	//
-	//split := container.NewHSplit(list, container.NewMax())
-	//tabs.'' = 0.2
-
-	//
-
-	//
-
-	//split := container.NewVBox(list, promptTextarea, prepareButton, submitButton)
-
 }
 
 func SubmitPrompt(promptText string) {
@@ -82,4 +58,5 @@ func SubmitPrompt(promptText string) {
 	config.Settings.Prompt = promptText
 	config.Save()
 	go logic.Prompt(config.Settings)
+	TextWindow(<-logic.AnswerChan, "Resposta")
 }
